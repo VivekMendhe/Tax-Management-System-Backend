@@ -1,4 +1,4 @@
-package com.pack.tax;
+package com.pack.tax.serviceimpl;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
@@ -6,6 +6,7 @@ import static org.mockito.Mockito.when;
 import java.util.Arrays;
 import java.util.List;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -20,24 +21,38 @@ import com.pack.tax.Repository.TaxSlabRepository;
 import com.pack.tax.dto.TaxCalculationRequest;
 import com.pack.tax.dto.TaxCalculationResponse;
 import com.pack.tax.entity.TaxSlab;
-import com.pack.tax.serviceimpl.TaxSlabServiceImpl;
 
 @SpringBootTest
-class TaxManagementSystemApplicationTests {
+class TaxSlabServiceImplTest2 {
 
-	@Test
-	void contextLoads() {
-	}
-	
+	/*
+	 * Mockito is a popular Java library used for unit testing by creating mock
+	 * objects. These mock objects simulate the behavior of real objects in a
+	 * controlled way, allowing developers to isolate and test the functionality of
+	 * specific components in their code without relying on the actual
+	 * implementations of dependencies. This is particularly useful for testing
+	 * classes that interact with external systems like databases, web services, or
+	 * other complex dependencies.
+	 */
+
+	//@InjectMocks annotation is used to create and inject the mock object
 	@InjectMocks
 	private TaxSlabServiceImpl taxSlabService;
 
+	// A mock object returns a dummy data corresponding to some dummy input passed
+	// to it.
 	@Mock
 	private TaxSlabRepository taxSlabRepository;
 
 	@Before
 	public void setUp() {
 		MockitoAnnotations.openMocks(this);
+		System.out.println("TaxSlabServiceImpl starts");
+	}
+
+	@After
+	public void done() {
+		System.out.println("TaxSlabServiceImpl ends");
 	}
 
 	@Test
@@ -99,10 +114,9 @@ class TaxManagementSystemApplicationTests {
 	}
 
 	@ParameterizedTest
-	@CsvSource({ 
-		"1000000, old, 102500.0, 4100.0, 106600.0", 
-		"1500000, old, 247500.0, 9900.0, 257400.0" 
-	})
+	@CsvSource({ "1000000, old, 102500.0, 4100.0, 106600.0", "1500000, old, 247500.0, 9900.0, 257400.0",
+			"750000, old, 52500.0, 2100.0, 54600.0", "650000, old, 32500.0, 0.0, 0.0", "150000, old, 0.0, 0.0, 0.0",
+			"350000, old, 2500.0, 0.0, 0.0", })
 	public void testCalculateTaxOldRegimesTest(double grossAmount, String regime, double expectedTaxAmount,
 			double expectedCessAmount, double expectedTotalTaxAmount) {
 		// Given
@@ -129,10 +143,9 @@ class TaxManagementSystemApplicationTests {
 	}
 
 	@ParameterizedTest
-	@CsvSource({ 
-		"1000000, new, 52500.0, 2100.0, 54600.0", 
-		"1500000, new, 140000.0, 5600.0, 145600.0" 
-	})
+	@CsvSource({ "1000000, new, 52500.0, 2100.0, 54600.0", "1500000, new, 140000.0, 5600.0, 145600.0",
+			"1700000, new, 195000.0, 7800.0, 202800.0", "750000, new, 25000.0, 0.0, 0.0",
+			"650000, new, 15000.0, 0.0, 0.0", "150000, new, 0.0, 0.0, 0.0", })
 	public void testCalculateTaxNewRegimesTest(double grossAmount, String regime, double expectedTaxAmount,
 			double expectedCessAmount, double expectedTotalTaxAmount) {
 		// Given

@@ -1,13 +1,14 @@
-package com.pack.tax;
+package com.pack.tax.serviceimpl;
 
-import static org.junit.Assert.assertEquals;
+
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
 
 import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Before;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.ArgumentMatchers;
@@ -20,15 +21,10 @@ import com.pack.tax.Repository.TaxSlabRepository;
 import com.pack.tax.dto.TaxCalculationRequest;
 import com.pack.tax.dto.TaxCalculationResponse;
 import com.pack.tax.entity.TaxSlab;
-import com.pack.tax.serviceimpl.TaxSlabServiceImpl;
 
 @SpringBootTest
-class TaxManagementSystemApplicationTests {
+public class TaxSlabServiceImplTests {
 
-	@Test
-	void contextLoads() {
-	}
-	
 	@InjectMocks
 	private TaxSlabServiceImpl taxSlabService;
 
@@ -99,10 +95,7 @@ class TaxManagementSystemApplicationTests {
 	}
 
 	@ParameterizedTest
-	@CsvSource({ 
-		"1000000, old, 102500.0, 4100.0, 106600.0", 
-		"1500000, old, 247500.0, 9900.0, 257400.0" 
-	})
+	@CsvSource({ "1000000, old, 102500.0, 4100.0, 106600.0", "1500000, old, 247500.0, 9900.0, 257400.0" })
 	public void testCalculateTaxOldRegimesTest(double grossAmount, String regime, double expectedTaxAmount,
 			double expectedCessAmount, double expectedTotalTaxAmount) {
 		// Given
@@ -129,10 +122,7 @@ class TaxManagementSystemApplicationTests {
 	}
 
 	@ParameterizedTest
-	@CsvSource({ 
-		"1000000, new, 52500.0, 2100.0, 54600.0", 
-		"1500000, new, 140000.0, 5600.0, 145600.0" 
-	})
+	@CsvSource({ "1000000, new, 52500.0, 2100.0, 54600.0", "1500000, new, 140000.0, 5600.0, 145600.0" })
 	public void testCalculateTaxNewRegimesTest(double grossAmount, String regime, double expectedTaxAmount,
 			double expectedCessAmount, double expectedTotalTaxAmount) {
 		// Given
@@ -157,5 +147,4 @@ class TaxManagementSystemApplicationTests {
 		assertEquals(expectedCessAmount, response.getCessAmount(), 0.01);
 		assertEquals(expectedTotalTaxAmount, response.getTotalTaxAmount(), 0.01);
 	}
-
 }
